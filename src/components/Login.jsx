@@ -1,42 +1,57 @@
-import { Box, Button, Card, CardActions, CardContent, Grid, Link, Typography } from "@mui/material"
-import LGMD_BG from '../assets/images/BackgroundLGMD.png'
-import SM_BG from '../assets/images/BackgroundSM.jpg'
-import XS_BG from '../assets/images/BackgroundXS.jpg'
-import logo from '../assets/images/logo.png'
+import { Box, Button, ButtonGroup, Card, CardActions, CardContent, Grid, Link, Typography } from "@mui/material"
+import signup from '../assets/images/signup.png'
+import teacher from '../assets/images/Teacher.jpg'
+import teacherXS from '../assets/images/TeacherMobile.jpg'
+import admin from '../assets/images/Admin.jpg'
+import adminXS from '../assets/images/AdminMobile.jpg'
 import { COLORS } from "../assets/utils/colors"
-import { RememberButtonUI } from "../assets/utils/RememberButtonUI"
+import { InputField } from "../assets/utils/InputField"
+import { ButtonX } from "../assets/utils/ButtonX"
+import { useState } from "react"
+import { CheckBox } from "../assets/utils/CheckBox"
 
 export const Login = () => {
+    const [role, setRole] = useState("teacher")
+
+    const image = role === "teacher" ? teacher : admin
+    const imageXS = role === "teacher" ? teacherXS : adminXS
+
     return (
         <Box sx={{ flexGrow: 1, position: 'relative' }}>
-            <Box sx={{
-                display: { lg: 'block', md: 'block', sm: 'none', xs: 'none' }, position: 'absolute',
-                backgroundImage: `url(${LGMD_BG})`, backgroundSize: 'cover', backgroundPosition: 'center',
-                filter: 'blur(5px)', zIndex: 0, inset: 0
-            }}></Box>
-            <Box sx={{
+            <Box key={role} sx={{
                 display: { lg: 'none', md: 'none', sm: 'block', xs: 'none' }, position: 'absolute',
-                backgroundImage: `url(${SM_BG})`, backgroundSize: 'cover', backgroundPosition: 'center',
-                filter: 'blur(5px)', zIndex: 0, inset: 0
+                backgroundImage: `url(${image})`, backgroundSize: 'cover', backgroundPosition: 'center',
+                filter: 'blur(5px)', zIndex: 0, inset: 0, animation: 'fadeZoom 300ms ease-in-out'
             }}></Box>
-            <Box sx={{
+            <Box key={role} sx={{
                 display: { lg: 'none', md: 'none', sm: 'none', xs: 'block' }, position: 'absolute',
-                backgroundImage: `url(${XS_BG})`, backgroundSize: 'cover', backgroundPosition: 'center',
-                filter: 'blur(5px)', zIndex: 0, inset: 0
+                backgroundImage: `url(${imageXS})`, backgroundSize: 'cover', backgroundPosition: 'center',
+                filter: 'blur(5px)', zIndex: 0, inset: 0, animation: 'fadeZoom 300ms ease-in-out'
             }}></Box>
             <Grid container spacing={2} sx={{ zIndex: 1, position: 'relative' }}>
-                <Grid size={12}>
-                    <Box sx={{ height: '95vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Grid size={6} sx={{
+                    display: { lg: 'flex', md: 'flex', sm: 'none', xs: 'none' },
+                    alignItems: 'center', height: '100vh', overflow: 'hidden', m: 0, p: 0
+                }}>
+                    <Box sx={{ height: '100%', width: '100%', overflow: 'hidden' }}>
+                        <Box key={role} component="img" src={image} alt="Teacher Image" sx={{
+                            objectFit: 'cover', width: '100%', height: '100%',
+                            animation: 'fadeZoom 300ms ease-in-out'
+                        }}></Box>
+                    </Box>
+                </Grid>
+                <Grid size={{ lg: 6, md: 6, sm: 12, xs: 12 }}>
+                    <Box sx={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <Card variant="outlined" sx={{
                             width: { lg: 400, md: 400, sm: 400, xs: 300 },
                             backgroundColor: COLORS.cardBg, border: `solid 2px ${COLORS.cardBorder}`, borderRadius: 5,
                             boxShadow: `0px 0px 8px 10px ${COLORS.shadow}`
                         }}>
-                            <CardContent>
+                            <CardContent sx={{ pb: 0 }}>
                                 <Box sx={{ flexGrow: 1 }}>
                                     <Grid container spacing={2}>
                                         <Grid size={4} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                            <Box component="img" src={logo} alt="Student Attendance app logo"
+                                            <Box component="img" src={signup} alt="Signup logo"
                                                 sx={{ height: { lg: 100, md: 100, sm: 80, xs: 60 }, width: { lg: 100, md: 100, sm: 80, xs: 60 } }}></Box>
                                         </Grid>
                                         <Grid size={8}>
@@ -55,30 +70,61 @@ export const Login = () => {
                                                             color: COLORS.secondaryText, textAlign: 'center',
                                                             fontSize: { lg: 20, md: 20, sm: 18, xs: 15 }
                                                         }}>
-                                                            Tracking Application
+                                                            Tracking application
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
                                             </Box>
                                         </Grid>
+                                        <Grid size={12} sx={{ pb: 2 }}>
+                                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
+                                                <Box>
+                                                    <Typography sx={{ color: COLORS.mutedText, fontWeight: 'bolder' }}>
+                                                        Login as
+                                                    </Typography>
+                                                </Box>
+                                                <Box>
+                                                    <ButtonGroup variant="contained" sx={{ boxShadow: `0px 6px 24px 0px ${COLORS.shadow}` }}>
+                                                        <Button onClick={() => setRole("teacher")} sx={{
+                                                            backgroundColor: role === "teacher" ? COLORS.accentHover : COLORS.primaryAccent,
+                                                            color: role === "teacher" ? COLORS.primaryAccent : COLORS.primaryText, fontWeight: 'bold',
+                                                            '&:hover': {
+                                                                backgroundColor: COLORS.accentHover, color: COLORS.primaryAccent
+                                                            }
+                                                        }}>teacher</Button>
+                                                        <Button onClick={() => setRole("admin")} sx={{
+                                                            backgroundColor: role === "admin" ? COLORS.accentHover : COLORS.primaryAccent,
+                                                            color: role === "admin" ? COLORS.primaryAccent : COLORS.primaryText, fontWeight: 'bold',
+                                                            '&:hover': {
+                                                                backgroundColor: COLORS.accentHover, color: COLORS.primaryAccent
+                                                            }
+                                                        }}>admin</Button>
+                                                    </ButtonGroup>
+                                                </Box>
+                                            </Box>
+                                        </Grid>
                                         <Grid size={12}>
-                                            <Box sx={{ display: 'flex' }}>
-                                                <RememberButtonUI /> Remember Me
+                                            <Box sx={{ width: '100%' }}>
+                                                <InputField placeholder={"Username or email"} theme={COLORS} />
+                                            </Box>
+                                        </Grid>
+                                        <Grid size={12}>
+                                            <Box sx={{ width: '100%' }}>
+                                                <InputField placeholder={"Password"} theme={COLORS} mode="password" />
+                                            </Box>
+                                        </Grid>
+                                        <Grid size={12}>
+                                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                                <CheckBox theme={COLORS} /> Remember Me
                                             </Box>
                                         </Grid>
                                     </Grid>
                                 </Box>
-                            </CardContent>
+                            </CardContent><br />
                             <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
-                                <Button variant="contained" sx={{
-                                    backgroundColor: COLORS.primaryAccent, color: COLORS.primaryText,
-                                    '&:hover': {
-                                        backgroundColor: COLORS.accentHover,
-                                        color: COLORS.primaryAccent
-                                    }
-                                }}>Login</Button>
-                            </CardActions><br />
-                            <CardContent>
+                                <ButtonX name="SIGN-UP" theme={COLORS} />
+                            </CardActions>
+                            <CardContent sx={{ pb: 0 }}>
                                 <Box sx={{ textAlign: 'center', color: COLORS.secondaryText }}>
                                     Forgot Password? No Worries <Link href="/forgot-password" sx={{
                                         color: COLORS.primaryText, textDecoration: 'none',
@@ -95,7 +141,7 @@ export const Login = () => {
                                         '&:hover': {
                                             cursor: 'pointer', color: COLORS.mutedText
                                         }
-                                    }}>Sign Up</Link>
+                                    }}>Sign-Up</Link>
                                 </Box>
                             </CardContent>
                         </Card>
@@ -105,3 +151,4 @@ export const Login = () => {
         </Box>
     )
 }
+
