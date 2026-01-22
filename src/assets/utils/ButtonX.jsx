@@ -1,4 +1,4 @@
-export const ButtonX = ({ name, theme }) => {
+export const ButtonX = ({ name, theme, onClick }) => {
     return (
         <>
             <style>{`
@@ -65,7 +65,7 @@ export const ButtonX = ({ name, theme }) => {
                 }
             `}</style>
 
-            <button className="button">
+            <button className="button" onClick={onClick}>
                 <span>{name}</span>
             </button>
 

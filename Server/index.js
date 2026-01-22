@@ -13,6 +13,10 @@ app.use(express.json())
 app.use(cors())
 app.use(morgan('dev'))
 
+const userRoute = require('./routes/userRoute')
+
+app.use('/user',userRoute)
+
 app.get('/',(req, res) => {
     res.send("🙏 Welcome to Student Attendance by Mike Davis A - web application's backend 🙏")
 })

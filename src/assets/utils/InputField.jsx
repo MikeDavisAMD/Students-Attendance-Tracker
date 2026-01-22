@@ -1,7 +1,7 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react"
 
-export const InputField = ({ placeholder, mode = "text", theme }) => {
+export const InputField = ({ placeholder, mode = "text", theme, onChange, value }) => {
     const [showPW, setShowPW] = useState(false);
 
     const getInputType = () => {
@@ -60,8 +60,8 @@ export const InputField = ({ placeholder, mode = "text", theme }) => {
             `}</style>
 
             <div className="input-wrapper">
-                <input type={getInputType()} autocomplete="off" className="input" placeholder={placeholder}
-                    maxLength={mode === "mobile" ? 10 : undefined} onInput={handleMobileInput}></input>
+                <input type={getInputType()} autocomplete="off" className="input" placeholder={placeholder} value={value}
+                    maxLength={mode === "mobile" ? 10 : undefined} onInput={handleMobileInput} onChange={onChange}></input>
 
                 {mode === "password" && (
                     <span className="eye" onClick={() => setShowPW(!showPW)}>

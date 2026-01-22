@@ -1,5 +1,5 @@
 import { Box, Button, ButtonGroup, Card, CardActions, CardContent, Grid, Link, Typography } from "@mui/material"
-import signup from '../assets/images/signup.png'
+import logo from '../assets/images/logo.png'
 import teacher from '../assets/images/Teacher.jpg'
 import teacherXS from '../assets/images/TeacherMobile.jpg'
 import admin from '../assets/images/Admin.jpg'
@@ -12,6 +12,9 @@ import { CheckBox } from "../assets/utils/CheckBox"
 
 export const Login = () => {
     const [role, setRole] = useState("teacher")
+    const [username, setUsername] = useState('')
+    const [password, SetPassword] = useState('')
+    const [remember, setRemember] = useState(false)
 
     const image = role === "teacher" ? teacher : admin
     const imageXS = role === "teacher" ? teacherXS : adminXS
@@ -51,7 +54,7 @@ export const Login = () => {
                                 <Box sx={{ flexGrow: 1 }}>
                                     <Grid container spacing={2}>
                                         <Grid size={4} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                            <Box component="img" src={signup} alt="Signup logo"
+                                            <Box component="img" src={logo} alt="Signup logo"
                                                 sx={{ height: { lg: 100, md: 100, sm: 80, xs: 60 }, width: { lg: 100, md: 100, sm: 80, xs: 60 } }}></Box>
                                         </Grid>
                                         <Grid size={8}>
@@ -105,12 +108,14 @@ export const Login = () => {
                                         </Grid>
                                         <Grid size={12}>
                                             <Box sx={{ width: '100%' }}>
-                                                <InputField placeholder={"Username or email"} theme={COLORS} />
+                                                <InputField placeholder={"Username or email"} theme={COLORS} 
+                                                value={username} onChange={(e) => setUsername(e.target.value)}/>
                                             </Box>
                                         </Grid>
                                         <Grid size={12}>
                                             <Box sx={{ width: '100%' }}>
-                                                <InputField placeholder={"Password"} theme={COLORS} mode="password" />
+                                                <InputField placeholder={"Password"} theme={COLORS} mode="password" 
+                                                value={password} onChange={(e) => SetPassword(e.target.value)}/>
                                             </Box>
                                         </Grid>
                                         <Grid size={12}>
@@ -122,7 +127,7 @@ export const Login = () => {
                                 </Box>
                             </CardContent><br />
                             <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
-                                <ButtonX name="SIGN-UP" theme={COLORS} />
+                                <ButtonX name="LOGIN" theme={COLORS} />
                             </CardActions>
                             <CardContent sx={{ pb: 0 }}>
                                 <Box sx={{ textAlign: 'center', color: COLORS.secondaryText }}>
