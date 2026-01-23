@@ -153,7 +153,7 @@ export const Signup = () => {
                                 </Box>
                             </CardContent>
                             <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
-                                <ButtonX name={loading ? "LOADING..." : "SIGN-UP"} theme={COLORS} onClick={handleClick} />
+                                <ButtonX name={loading ? "SIGNING..." : "SIGN-UP"} theme={COLORS} onClick={handleClick} />
                             </CardActions>
                             <CardContent>
                                 <Box sx={{ textAlign: 'center', color: COLORS.secondaryText }}>

@@ -1,4 +1,4 @@
-export const CheckBox = ({ theme }) => {
+export const CheckBox = ({ theme, value, setValue }) => {
     return (
         <>
             <style>{`
@@ -58,7 +58,8 @@ export const CheckBox = ({ theme }) => {
             }
             `}</style>
 
-            <input className="check" type="checkbox" defaultChecked={false}></input>
+            <input className="check" type="checkbox" defaultChecked={false}
+                checked={value} onChange={e => setValue(e.target.checked)}></input>
         </>
     )
 }

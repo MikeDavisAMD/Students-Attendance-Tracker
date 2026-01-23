@@ -1,4 +1,4 @@
-import { Box, Button, ButtonGroup, Card, CardActions, CardContent, Grid, Link, Typography } from "@mui/material"
+import { Alert, Box, Button, ButtonGroup, Card, CardActions, CardContent, Grid, Link, Snackbar, Typography } from "@mui/material"
 import logo from '../assets/images/logo.png'
 import teacher from '../assets/images/Teacher.jpg'
 import teacherXS from '../assets/images/TeacherMobile.jpg'
@@ -9,15 +9,68 @@ import { InputField } from "../assets/utils/InputField"
 import { ButtonX } from "../assets/utils/ButtonX"
 import { useState } from "react"
 import { CheckBox } from "../assets/utils/CheckBox"
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 export const Login = () => {
+    const navigate = useNavigate()
     const [role, setRole] = useState("teacher")
     const [username, setUsername] = useState('')
     const [password, SetPassword] = useState('')
     const [remember, setRemember] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const image = role === "teacher" ? teacher : admin
     const imageXS = role === "teacher" ? teacherXS : adminXS
+
+    // snackbar
+    const [openSnackbar, setOpenSnackbar] = useState(false)
+    const [error, setError] = useState('')
+    const [success, setSuccess] = useState('')
+
+    const handleCloseSnackbar = (_, reason) => {
+        if (reason === 'clickaway') return
+        setOpenSnackbar(false)
+    }
+
+    const handleLogin = async () => {
+        if (!username || !password) {
+            setSuccess('')
+            setError('Invalid Credentials')
+            setOpenSnackbar(true)
+            return
+        }
+
+        setLoading(true)
+        try {
+            const response = await axios.post('http://localhost:2000/user/login', {
+                username, password, remember
+            })
+
+            const token = response.data.token
+
+            if (role !== response.data.user.role) {
+                setSuccess('')
+                setError(`${username} is not a ${role}`)
+                setOpenSnackbar(true)
+                return
+            }
+
+            remember ? localStorage.setItem('token', token) : sessionStorage.setItem('token', token)
+
+            navigate('/', {
+                state: {
+                    role: response.data.user.role
+                }
+            })
+        } catch (error) {
+            setSuccess('')
+            setError(error.response.data.message)
+            openSnackbar(true)
+        } finally {
+            setLoading(false)
+        }
+    }
 
     return (
         <Box sx={{ flexGrow: 1, position: 'relative' }}>
@@ -108,26 +161,26 @@ export const Login = () => {
                                         </Grid>
                                         <Grid size={12}>
                                             <Box sx={{ width: '100%' }}>
-                                                <InputField placeholder={"Username or email"} theme={COLORS} 
-                                                value={username} onChange={(e) => setUsername(e.target.value)}/>
+                                                <InputField placeholder={"Username or email"} theme={COLORS}
+                                                    value={username} onChange={(e) => setUsername(e.target.value)} />
                                             </Box>
                                         </Grid>
                                         <Grid size={12}>
                                             <Box sx={{ width: '100%' }}>
-                                                <InputField placeholder={"Password"} theme={COLORS} mode="password" 
-                                                value={password} onChange={(e) => SetPassword(e.target.value)}/>
+                                                <InputField placeholder={"Password"} theme={COLORS} mode="password"
+                                                    value={password} onChange={(e) => SetPassword(e.target.value)} />
                                             </Box>
                                         </Grid>
                                         <Grid size={12}>
                                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                                <CheckBox theme={COLORS} /> Remember Me
+                                                <CheckBox theme={COLORS} value={remember} setValue={setRemember} /> Remember Me
                                             </Box>
                                         </Grid>
                                     </Grid>
                                 </Box>
                             </CardContent><br />
                             <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
-                                <ButtonX name="LOGIN" theme={COLORS} />
+                                <ButtonX name={loading ? "LOGGING..." : "LOGIN"} theme={COLORS} onClick={handleLogin} />
                             </CardActions>
                             <CardContent sx={{ pb: 0 }}>
                                 <Box sx={{ textAlign: 'center', color: COLORS.secondaryText }}>
@@ -153,6 +206,14 @@ export const Login = () => {
                     </Box>
                 </Grid>
             </Grid>
+            <Snackbar open={openSnackbar} autoHideDuration={5000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} variant='filled' severity={error ? 'error' : 'success'}
+                    sx={{
+                        backgroundColor: error ? COLORS.error : COLORS.success
+                    }}>
+                    {error || success}
+                </Alert>
+            </Snackbar>
         </Box>
     )
 }
